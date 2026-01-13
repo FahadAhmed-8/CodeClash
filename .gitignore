@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment Variables (CRITICAL: Do not upload these)
+.env
+.env.local
+.env.production
+
+# Build folders
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Compiler temporary execution files
+compiler/temp/

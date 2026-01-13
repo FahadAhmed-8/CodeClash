@@ -1,0 +1,2 @@
+
+print("Try programiz.pro")
