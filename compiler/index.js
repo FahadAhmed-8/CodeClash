@@ -10,8 +10,7 @@ const generateAiResponse = require('./generateAiResponse');
 const genieExplanation = require('./genieExplanation');
 
 const app = express();
-
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -69,5 +68,11 @@ app.post("/genieExplain", async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 8000;
+
+const PORT = parseInt(process.env.PORT) || 8000;
+
+app.get("/health", (req, res) => {
+    res.status(200).send("Compiler Service is Healthy");
+});
+
 app.listen(PORT, () => console.log(`Compiler Service running on port ${PORT}`));

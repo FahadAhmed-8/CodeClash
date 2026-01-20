@@ -7,7 +7,7 @@ const AdminDashboard = () => {
 
   const fetchProblems = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/problems");
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/problems`);
       setProblems(res.data);
     } catch (err) {
       console.error("Error fetching problems");
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
     ) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:5000/api/problems/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/problems/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Remove from local state

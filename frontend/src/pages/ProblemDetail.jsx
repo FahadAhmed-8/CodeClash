@@ -38,7 +38,7 @@ const ProblemDetail = () => {
   useEffect(() => {
     const fetchProblem = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/problems/${id}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/problems/${id}`);
         setProblem(res.data);
       } catch (err) {
         console.error("Error fetching problem:", err);
@@ -65,7 +65,7 @@ const ProblemDetail = () => {
     setOutput("Running code...");
     const inputToUse = showCustomInput ? customInput : problem.samples[0]?.input || "";
     try {
-      const response = await axios.post("http://localhost:8000/run", {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/compiler/run`, {
         code,
         language,
         input: inputToUse,
@@ -93,7 +93,7 @@ const ProblemDetail = () => {
       // Loop through test cases
       for (let i = 0; i < problem.testCases.length; i++) {
         const tc = problem.testCases[i];
-        const res = await axios.post('http://localhost:8000/run', { code, language, input: tc.input });
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/compiler/run`, { code, language, input: tc.input });
         
         const userOutput = res.data.output.trim();
         const expectedOutput = tc.expectedOutput.trim();
@@ -115,7 +115,7 @@ const ProblemDetail = () => {
 
       // Save to Database (Port 5000)
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/submissions', {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/submissions`, {
         problemId: id, code, language, verdict: finalVerdict
       }, { headers: { Authorization: `Bearer ${token}` } });
 
@@ -125,7 +125,7 @@ const ProblemDetail = () => {
       if (!allPassed && firstFailedCase) {
         setAiLoading(true);
         try {
-          const aiReview = await axios.post('http://localhost:8000/ai-review', {
+          const aiReview = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/compiler/ai-review`, {
             code,
             verdict: finalVerdict,
             testResults: [firstFailedCase]
@@ -150,7 +150,7 @@ const ProblemDetail = () => {
     setAiLoading(true);
     setAiResponse("");
     try {
-      const res = await axios.post("http://localhost:8000/genieExplain", {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/compiler/genieExplain`, {
         problemStatement: problem.statement,
         type: type,
       });

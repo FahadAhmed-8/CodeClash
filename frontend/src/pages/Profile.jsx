@@ -25,7 +25,7 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/users/profile", {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProfileData(res.data);
@@ -47,7 +47,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put("http://localhost:5000/api/users/profile", editForm, {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile`, editForm, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setIsEditing(false);

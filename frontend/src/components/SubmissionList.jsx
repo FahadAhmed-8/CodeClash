@@ -8,7 +8,7 @@ const SubmissionList = ({ problemId }) => {
     const fetchSubmissions = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/submissions/user', {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/submissions/user`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         // Filter submissions for this specific problem

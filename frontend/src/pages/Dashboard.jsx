@@ -11,7 +11,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/problems');
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/problems`);
         setProblems(res.data);
       } catch (err) {
         console.error("Error fetching problems:", err);

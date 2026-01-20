@@ -45,7 +45,7 @@ const AdminCreateProblem = () => {
     };
 
     try {
-      await axios.post('http://localhost:5000/api/problems', problemData, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/problems`, problemData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("Problem Created with " + testCases.length + " test cases!");

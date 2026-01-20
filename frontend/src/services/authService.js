@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 const instance = axios.create({
-  baseURL: `${API_URL}/api/users`
+  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/users`
 });
 
 export const registerUser = (data) => instance.post('/register', data);
