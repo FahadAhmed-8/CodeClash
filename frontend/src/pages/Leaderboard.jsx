@@ -10,7 +10,7 @@ const Leaderboard = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "http://localhost:5000/api/users/leaderboard",
+          `${import.meta.env.VITE_BACKEND_URL}/api/users/leaderboard`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -27,13 +27,25 @@ const Leaderboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="relative w-20 h-20 mx-auto">
-            <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#0d1117] text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+          {/* Header skeleton */}
+          <div className="text-center space-y-4">
+            <div className="skeleton h-14 w-64 mx-auto rounded-xl" />
+            <div className="skeleton h-4 w-48 mx-auto rounded-lg" />
+            <div className="flex justify-center gap-8 pt-6">
+              <div className="skeleton h-16 w-24 rounded-xl" />
+              <div className="skeleton h-16 w-24 rounded-xl" />
+            </div>
           </div>
-          <p className="text-gray-400 font-mono text-sm animate-pulse">Calculating Rankings...</p>
+          {/* Podium skeleton */}
+          <div className="flex items-end justify-center gap-4 max-w-3xl mx-auto">
+            <div className="flex-1 skeleton h-48 rounded-2xl" />
+            <div className="flex-1 skeleton h-60 rounded-2xl" />
+            <div className="flex-1 skeleton h-44 rounded-2xl" />
+          </div>
+          {/* Table skeleton */}
+          <div className="skeleton h-96 rounded-2xl" />
         </div>
       </div>
     );
@@ -43,14 +55,14 @@ const Leaderboard = () => {
     <div className="min-h-screen bg-[#0d1117] text-white relative overflow-hidden">
       {/* Animated background effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl animate-pulse-slow" style={{animationDelay: '1s'}} />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
-        {/* Enhanced Header */}
-        <div className="text-center mb-12 space-y-4">
+
+        {/* Header */}
+        <div className="text-center mb-12 space-y-4 animate-fadeIn">
           <div className="inline-block">
             <div className="flex items-center justify-center gap-3 mb-2">
               <svg className="w-8 h-8 text-yellow-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
@@ -64,17 +76,17 @@ const Leaderboard = () => {
               </svg>
             </div>
             <p className="text-gray-400 text-xs font-bold uppercase tracking-widest">
-              Global Rankings • Problems Solved
+              Global Rankings &bull; Problems Solved
             </p>
           </div>
-          
+
           {/* Stats Summary */}
           <div className="flex justify-center gap-8 pt-6">
             <div className="text-center">
               <p className="text-3xl font-black text-blue-400">{board.length}</p>
               <p className="text-xs text-gray-500 uppercase font-semibold tracking-wide">Competitors</p>
             </div>
-            <div className="w-px bg-gray-800"></div>
+            <div className="w-px bg-gray-800" />
             <div className="text-center">
               <p className="text-3xl font-black text-purple-400">{board[0]?.solved || 0}</p>
               <p className="text-xs text-gray-500 uppercase font-semibold tracking-wide">Top Score</p>
@@ -84,7 +96,7 @@ const Leaderboard = () => {
 
         {/* Top 3 Podium */}
         {board.length >= 3 && (
-          <div className="mb-12">
+          <div className="mb-12 animate-slideUp">
             <div className="flex items-end justify-center gap-4 max-w-3xl mx-auto">
               {/* 2nd Place */}
               <div className="flex-1 group">
@@ -109,7 +121,7 @@ const Leaderboard = () => {
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                   </div>
-                  <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-black shadow-lg animate-pulse">
+                  <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl font-black shadow-lg">
                     {board[0].username.charAt(0).toUpperCase()}
                   </div>
                   <div className="space-y-2">
@@ -143,47 +155,26 @@ const Leaderboard = () => {
         )}
 
         {/* Full Leaderboard Table */}
-        <div className="bg-gradient-to-br from-[#161b22] to-[#0d1117] border border-gray-800/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+        <div className="bg-gradient-to-br from-[#161b22] to-[#0d1117] border border-gray-800/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl animate-slideUp animation-delay-200">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="bg-[#0d1117]/80 text-gray-500 text-xs uppercase font-black tracking-widest border-b border-gray-800/50">
-                  <th className="p-6 w-24">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h7a1 1 0 100-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM15 8a1 1 0 10-2 0v5.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L15 13.586V8z" />
-                      </svg>
-                      Rank
-                    </div>
-                  </th>
-                  <th className="p-6">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                      </svg>
-                      Coder
-                    </div>
-                  </th>
-                  <th className="p-6 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      Solved
-                    </div>
-                  </th>
+                  <th className="p-6 w-24">Rank</th>
+                  <th className="p-6">Coder</th>
+                  <th className="p-6 text-right">Solved</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800/30">
                 {board.map((entry, index) => {
                   const isTopThree = index < 3;
-                  const rankColor = 
+                  const rankColor =
                     index === 0 ? "text-yellow-500" :
                     index === 1 ? "text-gray-400" :
                     index === 2 ? "text-orange-500" :
                     "text-gray-600";
-                  
-                  const bgHover = 
+
+                  const bgHover =
                     index === 0 ? "hover:bg-yellow-500/5" :
                     index === 1 ? "hover:bg-gray-500/5" :
                     index === 2 ? "hover:bg-orange-500/5" :
@@ -220,7 +211,7 @@ const Leaderboard = () => {
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-gray-200 group-hover:text-white transition-colors">
+                              <span className="font-bold text-gray-200 group-hover:text-white transition-colors duration-200">
                                 {entry.username}
                               </span>
                               {index === 0 && (
@@ -243,16 +234,14 @@ const Leaderboard = () => {
                         </div>
                       </td>
                       <td className="p-6 text-right">
-                        <div className="flex items-center justify-end gap-3">
-                          <span className={`text-2xl font-black tabular-nums ${
-                            index === 0 ? "text-yellow-400" :
-                            index === 1 ? "text-gray-400" :
-                            index === 2 ? "text-orange-400" :
-                            "text-blue-400"
-                          } group-hover:scale-110 transition-transform`}>
-                            {entry.solved}
-                          </span>
-                        </div>
+                        <span className={`text-2xl font-black tabular-nums ${
+                          index === 0 ? "text-yellow-400" :
+                          index === 1 ? "text-gray-400" :
+                          index === 2 ? "text-orange-400" :
+                          "text-blue-400"
+                        } group-hover:scale-110 transition-transform duration-200 inline-block`}>
+                          {entry.solved}
+                        </span>
                       </td>
                     </tr>
                   );
@@ -260,7 +249,7 @@ const Leaderboard = () => {
               </tbody>
             </table>
           </div>
-          
+
           {board.length === 0 && (
             <div className="p-16 text-center space-y-4">
               <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto">

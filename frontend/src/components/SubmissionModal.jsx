@@ -14,7 +14,7 @@ const SubmissionModal = ({ submissionId, onClose }) => {
       setError(null);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/submissions/${submissionId}`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/submissions/${submissionId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setDetails(res.data);

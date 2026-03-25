@@ -3,10 +3,8 @@ FROM node:18-alpine
 WORKDIR /app
 
 COPY package*.json ./
-ENV PORT=8000
-ENV FRONTEND_URL=http://localhost:5173
 
-RUN npm install
+RUN npm install --production
 
 RUN apk update && apk add --no-cache \
     g++ \
@@ -15,7 +13,12 @@ RUN apk update && apk add --no-cache \
     py3-pip \
     coreutils
 
+# Create directories for code files and outputs
+RUN mkdir -p /app/codes /app/inputs /app/outputs
+
 COPY . .
+
+ENV PORT=8000
 
 EXPOSE 8000
 

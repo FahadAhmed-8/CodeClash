@@ -19,7 +19,7 @@ const EditProblem = () => {
     useEffect(() => {
         const fetchProblem = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/problems/${id}`);
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/problems/${id}`);
                 setFormData({
                     ...res.data,
                     tags: res.data.tags.join(', '),
@@ -67,7 +67,7 @@ const EditProblem = () => {
                 tags: formData.tags.split(',').map(tag => tag.trim())
             };
 
-            await axios.put(`http://localhost:5000/api/problems/${id}`, formattedData, {
+            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/problems/${id}`, formattedData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
