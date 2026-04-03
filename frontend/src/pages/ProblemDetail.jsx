@@ -128,6 +128,7 @@ const ProblemDetail = () => {
         const tc = problem.testCases[i];
         const res = await axios.post(`${import.meta.env.VITE_COMPILER_URL}/run`, { code, language, input: tc.input });
 
+
         const userOutput = res.data.output.trim();
         const expectedOutput = tc.expectedOutput.trim();
 

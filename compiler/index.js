@@ -75,5 +75,11 @@ app.post("/genieExplain", async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 8000;
+
+const PORT = parseInt(process.env.PORT) || 8000;
+
+app.get("/health", (req, res) => {
+    res.status(200).send("Compiler Service is Healthy");
+});
+
 app.listen(PORT, () => console.log(`Compiler Service running on port ${PORT}`));
