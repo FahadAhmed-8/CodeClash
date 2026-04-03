@@ -18,6 +18,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Health check for Docker
+app.get("/", (req, res) => res.json({ status: "ok", service: "codeclash-compiler" }));
+
 app.post("/run", async (req, res) => {
     const { code, input, language } = req.body;
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import Editor from "@monaco-editor/react";
 import SubmissionList from "../components/SubmissionList";
@@ -45,6 +45,8 @@ const monacoLangMap = {
 
 const ProblemDetail = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const contestId = searchParams.get("contest");
   const [problem, setProblem] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -148,6 +150,19 @@ const ProblemDetail = () => {
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/submissions`, {
         problemId: id, code, language, verdict: finalVerdict
       }, { headers: { Authorization: `Bearer ${token}` } });
+
+      // If solving inside a contest, submit to contest endpoint
+      if (contestId && allPassed) {
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/api/contests/${contestId}/submit`,
+            { problemId: id },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } catch (contestErr) {
+          console.error("Contest submit error:", contestErr);
+        }
+      }
 
       setRefreshSubmissions(prev => prev + 1);
 

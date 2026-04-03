@@ -1,6 +1,30 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+const FloatingInput = ({ name, type = 'text', label, required = true, form, focused, setFocused, handleChange }) => (
+  <div className="relative">
+    <label className={`absolute left-4 transition-all duration-200 pointer-events-none ${
+      focused === name || form[name]
+        ? 'top-2 text-[10px] font-bold uppercase tracking-wider text-blue-400'
+        : 'top-1/2 -translate-y-1/2 text-sm text-gray-500'
+    }`}>
+      {label}
+    </label>
+    <input
+      type={type}
+      name={name}
+      className={`w-full bg-[#161b22] border rounded-xl px-4 pt-7 pb-3 text-sm text-white outline-none transition-all duration-200 ${
+        focused === name ? 'border-blue-500 shadow-lg shadow-blue-500/10' : 'border-gray-800 hover:border-gray-700'
+      }`}
+      value={form[name]}
+      onChange={handleChange}
+      required={required}
+      onFocus={() => setFocused(name)}
+      onBlur={() => setFocused('')}
+    />
+  </div>
+);
+
 const RegisterForm = ({ form, handleChange, handleSubmit, loading, error }) => {
   const [focused, setFocused] = useState('');
   const [showAdmin, setShowAdmin] = useState(false);
@@ -23,30 +47,7 @@ const RegisterForm = ({ form, handleChange, handleSubmit, loading, error }) => {
   };
 
   const strength = passwordStrength();
-
-  const FloatingInput = ({ name, type = 'text', label, required = true }) => (
-    <div className="relative">
-      <label className={`absolute left-4 transition-all duration-200 pointer-events-none ${
-        focused === name || form[name]
-          ? 'top-2 text-[10px] font-bold uppercase tracking-wider text-blue-400'
-          : 'top-1/2 -translate-y-1/2 text-sm text-gray-500'
-      }`}>
-        {label}
-      </label>
-      <input
-        type={type}
-        name={name}
-        className={`w-full bg-[#161b22] border rounded-xl px-4 pt-7 pb-3 text-sm text-white outline-none transition-all duration-200 ${
-          focused === name ? 'border-blue-500 shadow-lg shadow-blue-500/10' : 'border-gray-800 hover:border-gray-700'
-        }`}
-        value={form[name]}
-        onChange={handleChange}
-        required={required}
-        onFocus={() => setFocused(name)}
-        onBlur={() => setFocused('')}
-      />
-    </div>
-  );
+  const inputProps = { form, focused, setFocused, handleChange };
 
   return (
     <div className="min-h-screen flex bg-[#0d1117]">
@@ -100,11 +101,11 @@ const RegisterForm = ({ form, handleChange, handleSubmit, loading, error }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <FloatingInput name="username" label="Username" />
-            <FloatingInput name="email" type="email" label="Email Address" />
+            <FloatingInput name="username" label="Username" {...inputProps} />
+            <FloatingInput name="email" type="email" label="Email Address" {...inputProps} />
 
             <div className="space-y-2">
-              <FloatingInput name="password" type="password" label="Password" />
+              <FloatingInput name="password" type="password" label="Password" {...inputProps} />
               {form.password && (
                 <div className="space-y-1 px-1">
                   <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
@@ -117,7 +118,7 @@ const RegisterForm = ({ form, handleChange, handleSubmit, loading, error }) => {
               )}
             </div>
 
-            <FloatingInput name="confirmPassword" type="password" label="Confirm Password" />
+            <FloatingInput name="confirmPassword" type="password" label="Confirm Password" {...inputProps} />
 
             {/* Admin toggle */}
             <div className="pt-2">
@@ -131,7 +132,7 @@ const RegisterForm = ({ form, handleChange, handleSubmit, loading, error }) => {
               </button>
               {showAdmin && (
                 <div className="mt-3 animate-fadeIn">
-                  <FloatingInput name="adminSecret" type="password" label="Admin Secret Key" required={false} />
+                  <FloatingInput name="adminSecret" type="password" label="Admin Secret Key" required={false} {...inputProps} />
                   <p className="text-[10px] text-gray-600 mt-2 px-1">
                     Only fill this if you have been given an admin key.
                   </p>

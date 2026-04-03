@@ -24,6 +24,9 @@ import AdminDashboard from "./pages/AdminDashboard"; // Admin: Manage/Delete Lis
 import AdminCreateProblem from "./pages/AdminCreateProblem"; // Admin: Add Form
 import EditProblem from "./pages/EditProblem"; // Admin: Edit Form
 import LandingPage from "./pages/LandingPage"; // The new landing page entry point
+import Contests from "./pages/Contests"; // Contest Arena
+import CreateContest from "./pages/CreateContest"; // Admin: Create Contest
+import ContestDetail from "./pages/ContestDetail"; // Contest Detail View
 
 function App() {
   const dispatch = useDispatch();
@@ -86,6 +89,11 @@ function App() {
           <Route path="/problem/:id" element={<ProblemDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/contests" element={<Contests />} />
+          <Route path="/contest/create" element={
+            <AdminRoute><CreateContest /></AdminRoute>
+          } />
+          <Route path="/contest/:id" element={<ContestDetail />} />
 
           {/* Admin Protected Routes */}
           <Route

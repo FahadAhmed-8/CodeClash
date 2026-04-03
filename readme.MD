@@ -106,6 +106,17 @@ git clone https://github.com/yourusername/CodeClash.git
 cd CodeClash
 ```
 
+### Docker Setup (One Command)
+
+```bash
+docker-compose up --build
+```
+This starts **everything** — MongoDB, backend, compiler, and frontend. Visit `http://localhost:5173` once it's up. Seed problems with `docker exec -it codeclash-backend node seed.js`.
+
+---
+
+### Manual Setup
+
 ### 2. Start the Compiler
 
 ```bash
